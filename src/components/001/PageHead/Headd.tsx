@@ -3,7 +3,7 @@ import Head from "next/head";
 interface propTypes {
     title?: string;
 }
-const PageHead = (props: propTypes) => {
+const Headd = (props: propTypes) => {
     const { title="QlickTicket" } = props;
     return(
         <Head>
@@ -13,4 +13,4 @@ const PageHead = (props: propTypes) => {
         </Head>
     )
 }
-export default PageHead;
+export default Headd;

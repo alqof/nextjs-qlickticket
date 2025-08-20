@@ -1,4 +1,4 @@
-const environtment = {
-    API_URL: process.env.NEXT_PUBLIC_API_URL,
+const environment = {
+    API_URL: process.env.NEXT_PUBLIC_BACKEND_API,
 }
-export default environtment;
+export default environment;
