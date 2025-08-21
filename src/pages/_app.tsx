@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <HeroUIProvider>
       <NextThemesProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
         <QueryClientProvider client={queryClient}>
-          <ToastProvider placement="top-center" toastOffset={"top-center".includes("top-center") ? 20 : 0} />
+          <ToastProvider placement="top-center" toastOffset={"top-center".includes("top-center") ? 25 : 0} />
           <Component {...pageProps} />
         </QueryClientProvider>
       </NextThemesProvider>

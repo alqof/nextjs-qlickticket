@@ -1,8 +1,10 @@
 import Head from "next/head";
 
+
 interface propTypes {
     title?: string;
 }
+
 const Headd = (props: propTypes) => {
     const { title="QlickTicket" } = props;
     return(

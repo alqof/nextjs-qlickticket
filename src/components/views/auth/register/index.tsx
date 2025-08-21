@@ -13,8 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import authInstance from "@/libs/axios/auth.instance";
 
-
-const ViewRegister = () => {
+const RegisterView = () => {
     const router = useRouter();
     const [isVisible, setIsVisible] = React.useState({password: false, confirmPassword:false});
     const toggleVisibility = (field: "password"|"confirmPassword") => {
@@ -55,7 +54,7 @@ const ViewRegister = () => {
     });
 
     const onSubmit: SubmitHandler<IRegister> = (data) => {
-        console.log(data);
+        // console.log(data);
         mutateRegister(data)
     };
 
@@ -127,4 +126,4 @@ const ViewRegister = () => {
         </div>
     )
 }
-export default ViewRegister;
+export default RegisterView;

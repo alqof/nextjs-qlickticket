@@ -6,7 +6,7 @@ import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
-const ViewLogin = () => {
+const LoginView = () => {
     const [isVisible, setIsVisible] = React.useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -32,7 +32,7 @@ const ViewLogin = () => {
                 <CardBody className="p-8 space-y-8">
                     <h2 className="hidden md:block text-center text-xl text-lime-500 font-bold"> Login </h2>
 
-                    <form action="" className="space-y-4">
+                    <form action="" className="space-y-6">
                         <Input label="Username or Email" type="text" variant="faded"/>
                         <Input
                             endContent={
@@ -55,11 +55,11 @@ const ViewLogin = () => {
                             Login
                             {/* { isPending ? <FaSpinner className="animate-spin" /> : "Login"} */}
                         </Button >
-                        <p className="text-sm text-gray-400"> Don`&apos;t you have account? <Link href={'/auth/register'} className="text-gray-600 dark:text-gray-50">Register</Link> </p>
+                        <p className="text-sm text-gray-400"> Don&apos;t you have account? <Link href={'/auth/register'} className="text-gray-600 dark:text-gray-50">Register</Link> </p>
                     </div>
                 </CardBody>
             </Card>
         </div>
     )
 }
-export default ViewLogin;
+export default LoginView;
