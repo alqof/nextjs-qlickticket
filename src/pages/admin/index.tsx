@@ -1,7 +1,7 @@
 import { ThemeToggle } from "@/views/002components/ThemeToggle";
-import MainView from "@/views";
 import Headd from "@/views/001layouts/001Headd";
 import MainLayout from "@/views/001layouts/main";
+import AdminView from "@/views/admin/vAdmin";
 
 export default function Home() {
   return (
@@ -10,9 +10,9 @@ export default function Home() {
         <ThemeToggle/>
       </div>
       
-      <Headd title="QlickTicket"/>
+      <Headd title="QlickTicket | Admin"/>
       <MainLayout role="">
-        <MainView />
+        <AdminView />
       </MainLayout>
     </>
   );

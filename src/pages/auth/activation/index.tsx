@@ -1,6 +1,6 @@
-import AuthLayout from "@/components/layouts/auth";
-import ActivationView from "@/components/views/auth/activation";
-import authInstance from "@/libs/axios/auth.instance";
+import AuthLayout from "@/views/001layouts/auth";
+import ActivationView from "@/views/auth/activation";
+import authServices from "@/libs/axios/auth.services";
 import { addToast } from "@heroui/toast";
 import { useEffect } from "react";
 
@@ -31,7 +31,7 @@ export default PageActivation;
 // akan dipanggil di server, sebelum render halaman
 export async function getServerSideProps(context: {query:{code: string}}) {
     try {
-        const result = await authInstance.activation({code: context.query.code})
+        const result = await authServices.activation({code: context.query.code})
 
         if(result.status===200 && result.data.data){
             return {

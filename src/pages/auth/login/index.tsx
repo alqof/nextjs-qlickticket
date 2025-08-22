@@ -1,5 +1,5 @@
-import AuthLayout from "@/components/layouts/auth";
-import ViewLogin from "@/components/views/auth/login";
+import AuthLayout from "@/views/001layouts/auth";
+import ViewLogin from "@/views/auth/login";
 
 const PageLogin = () => {
     return(

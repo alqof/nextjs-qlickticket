@@ -1,30 +1,26 @@
 import { getSession } from "next-auth/react";
-import { Session } from "next-auth";
 import axios from "axios";
 import environment from "../config/environtment";
 import { addToast } from "@heroui/toast";
+import { ISession } from "../types/auth";
 
-
-interface CustomSession extends Session {
-    accessToken?: string;
-}
 
 const AxiosInstance = axios.create({
-    baseURL: environment.API_URL,
-    timeout: 1000 * 10,
-    headers: { "Content-Type": "application/json" }
+  baseURL: environment.BACKEND_API,
+  timeout: 1000 * 10, //10 second
+  headers: { "Content-Type": "application/json" }
 });
 
-// AxiosInstance.interceptors.request.use(
-//     async (request) => { 
-//         const session: CustomSession|null = await getSession();
-//         if(session && session.accessToken){
-//             request.headers.Authorization = `Bearer ${session.accessToken}`
-//         }
-//         return request;
-//     },
-//     error => Promise.reject(error),
-// )
+AxiosInstance.interceptors.request.use(
+    async (request) => { 
+        const session: ISession|null = await getSession();
+        if(session && session.accessToken){
+            request.headers.Authorization = `Bearer ${session.accessToken}`
+        }
+        return request;
+    },
+    error => Promise.reject(error),
+)
 
 AxiosInstance.interceptors.response.use(undefined, async (error) => {
   if (error.response?.status === 409) {
@@ -36,6 +32,8 @@ AxiosInstance.interceptors.response.use(undefined, async (error) => {
     });
     // await refreshToken();
     // return AxiosInstance(error.config); // Retry original request
+  }else{
+    alert(error.response?.status)
   }
   throw error;
 });

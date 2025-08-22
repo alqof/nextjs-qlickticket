@@ -11,7 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { IRegister } from "@/libs/types/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import authInstance from "@/libs/axios/auth.instance";
+import authServices from "@/libs/axios/auth.services";
 
 const RegisterView = () => {
     const router = useRouter();
@@ -41,7 +41,7 @@ const RegisterView = () => {
 
     const {mutate: mutateRegister, isPending} = useMutation({
         mutationFn: async (payload: IRegister)=>{
-            const result = await authInstance.register(payload);
+            const result = await authServices.register(payload);
             return result;
         },
         onError(error) {

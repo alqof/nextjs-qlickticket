@@ -1,4 +1,4 @@
-import AuthLayout from "@/components/layouts/auth";
+import AuthLayout from "@/views/001layouts/auth";
 import { Button } from "@heroui/button";
 import Image from "next/image";
 import { useRouter } from "next/router";

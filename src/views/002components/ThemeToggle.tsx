@@ -15,8 +15,11 @@ export const ThemeToggle = () => {
     if (!mounted) return null
 
     return (
-        <Button className="" onPress={()=>setTheme(theme==='light' ? 'dark' : 'light')}>
+        // <Button className="" radius="sm" onPress={()=>setTheme(theme==='light' ? 'dark' : 'light')}>
+        //     {theme==='light' ? <Sun /> : <Moon />}
+        // </Button>
+        <div className="w-10 h-10 flex items-center justify-center text-white cursor-pointer bg-gray-700/50 rounded-md shadow-lg inset-shadow-gray-100" onClick={()=>setTheme(theme==='light' ? 'dark' : 'light')}>
             {theme==='light' ? <Sun /> : <Moon />}
-        </Button>
+        </div>
     )
 };
