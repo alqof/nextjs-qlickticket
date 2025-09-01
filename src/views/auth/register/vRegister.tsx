@@ -13,7 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import authServices from "@/libs/axios/auth.services";
 
-const RegisterView = () => {
+const ViewRegister = () => {
     const router = useRouter();
     const [isVisible, setIsVisible] = React.useState({password: false, confirmPassword:false});
     const toggleVisibility = (field: "password"|"confirmPassword") => {
@@ -126,4 +126,4 @@ const RegisterView = () => {
         </div>
     )
 }
-export default RegisterView;
+export default ViewRegister;

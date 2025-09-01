@@ -1,8 +1,8 @@
 import AuthLayout from "@/views/001layouts/auth";
-import ActivationView from "@/views/auth/activation";
 import authServices from "@/libs/axios/auth.services";
 import { addToast } from "@heroui/toast";
 import { useEffect } from "react";
+import ViewActivation from "@/views/auth/activation/vActivation";
 
 
 interface propTypes {
@@ -21,7 +21,7 @@ const PageActivation = (props: propTypes) => {
 
     return(
         <AuthLayout title="QlickTicket | Activation">
-            <ActivationView {...props} />
+            <ViewActivation {...props} />
         </AuthLayout>
     )
 }

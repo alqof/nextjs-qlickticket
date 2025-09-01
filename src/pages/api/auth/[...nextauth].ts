@@ -6,8 +6,9 @@ import environment from "@/libs/config/environtment";
 
 export default NextAuth({
     session: {
-        strategy: "jwt", // bisa session juga, default jwt
-        maxAge: 60 * 60 * 24,
+        strategy: "jwt", //bisa session juga, default jwt
+        maxAge: 60 * 60 * 1, //second * minute * hour
+        // maxAge: 60 * 60 * 24,
     },
     secret: environment.AUTH_SECRET,
     providers: [
@@ -18,38 +19,41 @@ export default NextAuth({
                 identifier: { label: "identifier", type: "text" },
                 password: { label: "password", type: "password" }
             },
-            async authorize(credentials: Record<"identifier" | "password", string> | undefined): Promise<IUser | null>{
+            async authorize(credentials: Record<"identifier"|"password", string> | undefined): Promise<IUser|null>{
                 try {
                     const { identifier, password } = credentials as { identifier: string; password: string };
                     const ApiAuthLogin = await authServices.login({ identifier, password });
-                    const token = ApiAuthLogin.data.data;
-                    const ApiAuthMe = await authServices.getLoginToken(token);
-
-                    const user: IUser = ApiAuthMe.data.data;
-                    if (user) {
-                        return user; // Jika login sukses
+                    const accessToken = ApiAuthLogin.data.data;
+                    const ApiAuthMe = await authServices.me(accessToken);
+                    const user = ApiAuthMe.data.data;
+                    if (accessToken && ApiAuthLogin.status===200 && ApiAuthMe.status===200) {
+                        // return { 
+                        //     ...user, 
+                        //     accessToken: accessToken 
+                        // };
+                        user.accessToken = accessToken;
+                        return user;
+                    }else{
+                        return null;
                     }
-                    return null; // Jika login gagal
                 } catch (err) {
-                    return null; // Kalau ada error, login gagal
+                    return null;
                 }
-
             }
         })
     ],
     callbacks: {
-        async jwt({ token, user }: {token: IJwt; user: IUser | null}){
-            if(user){
-                token.user = user
+        async jwt({ token, user }: {token: IJwt, user: IUser}) {
+            if (user) {
+                token.user = user;
             }
             return token;
         },
-        async session({ token, session }: { token: any; session: any; }) {
-            return {
-                ...session,
-                user: token.user,
-                accessToken: token.user?.accessToken,
-            };
+        async session({ session, token }: {session: ISession, token: IJwt }) {
+            session.user = token.user;
+            session.accessToken = token.user?.accessToken;
+            
+            return session;
         },
     }
 })

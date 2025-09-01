@@ -9,7 +9,7 @@ interface propTypes {
     message: string;
 }
 
-const ActivationView = (props: propTypes) => {
+const ViewActivation = (props: propTypes) => {
     const router = useRouter();
 
     return(
@@ -65,4 +65,4 @@ const ActivationView = (props: propTypes) => {
         </AuthLayout>
     )
 }
-export default ActivationView;
+export default ViewActivation;

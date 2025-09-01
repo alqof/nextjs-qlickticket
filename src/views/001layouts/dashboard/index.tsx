@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import DashboardSidebarLayout from "./sidebar";
 import { C_SIDEBAR_ADMIN, C_SIDEBAR_USER } from "../001Constant/constants";
-import DashboardNavbarLayout from "../main/navbar";
+import DashboardNavbarLayout from "../main/layoutNavbar";
 
 interface propTypes {
     role?: string;

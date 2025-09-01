@@ -12,19 +12,48 @@ interface IRegister {
 interface IActivation {
     code: string;
 }
-interface IUser extends User {
-    accessToken?: string;
-    role?: string;
+interface ILogin {
+    identifier: string;
+    password: string;
 }
-interface ISession extends Session {
+
+interface IUser extends User {
+    // fullName?: string;
+    // username?: string;
+    // profilePicture?: string;
+    // isActive?: boolean;
+    role?: string;
     accessToken?: string;
 }
 interface IJwt extends JWT{
     user?: IUser;
 }
-interface ILogin {
-    identifier: string;
-    password: string;
+declare module "next-auth" {
+    interface Session {
+        user?: {
+            fullName?: string | null;
+            username?: string | null;
+            email?: string | null;
+            profilePicture?: string;
+            role?: string;
+            isActive?: boolean;
+            activationCode?: string;
+        };
+        // accessToken?: string;
+    }
 }
+interface ISession extends Session {
+    // user?: {
+    //     fullName?: string | null;
+    //     username?: string | null;
+    //     email?: string | null;
+    //     profilePicture?: string;
+    //     role?: string;
+    //     isActive?: boolean;
+    //     activationCode?: string;
+    // };
+    accessToken?: string;
+}
+
 
 export type { IRegister, IActivation, IUser, ISession, IJwt, ILogin}

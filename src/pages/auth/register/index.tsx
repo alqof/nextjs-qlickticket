@@ -1,11 +1,11 @@
 import AuthLayout from "@/views/001layouts/auth";
-import RegisterView from "@/views/auth/register";
+import ViewRegister from "@/views/auth/register/vRegister";
 
 
 const PageRegister = () => {
     return(
         <AuthLayout title="QlickTicket | Register">
-            <RegisterView />
+            <ViewRegister />
         </AuthLayout>
     )
 }

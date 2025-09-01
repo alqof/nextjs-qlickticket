@@ -6,27 +6,48 @@ import environment from './libs/config/environtment'
  
 export async function middleware(request: NextRequest) {
     const token: IJwt|null = await getToken({req: request, secret: environment.AUTH_SECRET})
+    // const accessToken = token?.user?.accessToken; 
+    // console.log("accessToken ==> ", accessToken);
     const { pathname } = request.nextUrl;
-    console.log("token role ==> ", token?.user?.role)
-    console.log("token ==> ", token)
 
+    // // Validasi token ke backend pakai fetch (bukan axios)
+    // let isValid = false;
+    // if (accessToken) {
+    //     const res = await fetch(`${environment.BACKEND_API}/auth/me`, {
+    //         headers: { Authorization: `Bearer ${accessToken}` }
+    //     });
+    //     isValid = res.status === 200;
+    //     if (res.status === 403) {
+    //         // Hapus cookie session
+    //         const response = NextResponse.redirect(new URL("/auth/login", request.url));
+    //         response.cookies.delete("next-auth.session-token");
+    //         response.cookies.delete("next-auth.callback-url");
+    //         return response;
+    //     }
+    // }
+
+
+    // Redirect admin ke /admin jika bukan di /admin
+    if (token && token.user?.role==='admin' && !pathname.startsWith('/admin')) {
+        return NextResponse.redirect(new URL('/admin', request.url));
+    }
+
+    // Protect /admin dan /admin/*
+    if (pathname==='/admin' || pathname.startsWith('/admin/')) {
+        if (!token || token.user?.role !== 'admin') {
+            return NextResponse.rewrite(new URL('/404', request.url))
+        }
+    }
     // Protect /member/* && /explore/*
-    if( (pathname==='/member' || pathname.startsWith('/member/')) || (pathname==='/explore' || pathname.startsWith('/explore/')) ){
+    if(pathname==='/member' || pathname.startsWith('/member/')){
         if(!token){
             return NextResponse.redirect(new URL('/auth/login', request.url))
         }
     }
 
-    // Protect /admin dan /admin/*
-    if (pathname === '/admin' || pathname.startsWith('/admin/')) {
-        if (!token || token.user?.role !== 'admin') {
-            return NextResponse.rewrite(new URL('/404', request.url))
-        }
-    }
-
     // Already logged in? protect auth access
-    if(pathname==='/auth/register' || pathname==="/auth/login"){
-        if(token){
+    if(token){
+        if(pathname==='/auth/register' || pathname==="/auth/login"){
             return NextResponse.redirect(new URL('/', request.url))
         }
     }
@@ -43,5 +64,6 @@ export const config = {
         '/explore',
         '/explore/:path*',
         '/auth/:path*',
+        '/',
     ],
 }

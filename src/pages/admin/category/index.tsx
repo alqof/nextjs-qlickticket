@@ -1,19 +1,15 @@
 import { ThemeToggle } from "@/views/002components/ThemeToggle";
 import Headd from "@/views/001layouts/001Headd";
 import MainLayout from "@/views/001layouts/main/layoutMain";
-import ExploreView from "@/views/explore/vExplore";
+import AdminCategoryView from "@/views/admin/category/vAdminCategory";
 
-
-export default function Home() {
+export default function PageAdminCategory() {
+    // SESSION HARUSNYA DISINI !!!!!!!!!
     return (
         <>
-            <div className="absolute bottom-4 left-4">
-                <ThemeToggle/>
-            </div>
-
-            <Headd title="QlickTicket | Explore"/>
+            <Headd title="QlickTicket | Admin - Category"/>
             <MainLayout role="">
-                <ExploreView />
+                <AdminCategoryView />
             </MainLayout>
         </>
     );
