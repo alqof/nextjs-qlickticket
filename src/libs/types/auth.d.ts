@@ -18,10 +18,13 @@ interface ILogin {
 }
 
 interface IUser extends User {
-    // fullName?: string;
-    // username?: string;
-    // profilePicture?: string;
-    // isActive?: boolean;
+    _id?: string;
+    fullName?: string;
+    username?: string;
+    profilePicture?: string;
+    isActive?: boolean;
+    activationCode?: string;
+
     role?: string;
     accessToken?: string;
 }
@@ -38,6 +41,7 @@ declare module "next-auth" {
             role?: string;
             isActive?: boolean;
             activationCode?: string;
+            accessToken?: string;
         };
         // accessToken?: string;
     }
@@ -52,7 +56,7 @@ interface ISession extends Session {
     //     isActive?: boolean;
     //     activationCode?: string;
     // };
-    accessToken?: string;
+    // accessToken?: string;
 }
 
 

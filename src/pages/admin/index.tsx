@@ -4,12 +4,12 @@ import MainLayout from "@/views/001layouts/main/layoutMain";
 import AdminView from "@/views/admin/vAdmin";
 
 export default function PageAdmin() {
-  return (
-    <>
-      <Headd title="QlickTicket | Admin"/>
-      <MainLayout role="">
-        <AdminView />
-      </MainLayout>
-    </>
-  );
+    return (
+        <>
+            <Headd title="QlickTicket | Admin"/>
+            <MainLayout>
+                <AdminView />
+            </MainLayout>
+        </>
+    );
 }

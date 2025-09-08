@@ -1,25 +1,22 @@
-import { ChangeEvent, ReactNode, useCallback, useEffect, useState } from "react"
-import DataTableCustom, { C_LIMIT_DEFAULT, C_PAGE_DEFAULT } from "../../002components/DataTableCustom"
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/dropdown";
-import { Button } from "@heroui/button";
-import { useRouter } from "next/router";
-import { CATEGORY_COLUMN_LIST } from "@/libs/constants/category.constant";
-import { SlOptionsVertical } from "react-icons/sl";
-import categoryServices from "@/libs/axios/category.services";
-import { useQuery } from "@tanstack/react-query";
 import useDebounce, { C_DELAY_DEFAULT } from "@/hooks/debounce";
-import { useDisclosure } from "@heroui/modal";
+import eventServices from "@/libs/axios/event.services";
+import { EVENT_COLUMN_LIST } from "@/libs/constants/event.constant";
+import DataTableCustom, { C_LIMIT_DEFAULT, C_PAGE_DEFAULT } from "@/views/002components/DataTableCustom";
 import { Avatar } from "@heroui/avatar";
-import ModalAddCateogry from "./modal/ModalAddCateogry";
-import ModalDeleteCategory from "./modal/ModalDeleteCategory";
-import ModalUpdateCategory from "./modal/ModalUpdateCategory";
-import { TbListDetails } from "react-icons/tb";
-import { FaEdit } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
+import { Button } from "@heroui/button";
+import { Chip } from "@heroui/chip";
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/dropdown";
+import { useDisclosure } from "@heroui/modal";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { ChangeEvent, ReactNode, useCallback, useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
+import { MdDeleteOutline } from "react-icons/md";
+import { SlOptionsVertical } from "react-icons/sl";
+import { TbListDetails } from "react-icons/tb";
 
 
-function useCategory(){
+function useEvent(){
     const router = useRouter();
     const debounce = useDebounce();
 
@@ -40,7 +37,7 @@ function useCategory(){
         let params = `limit=${currentLimit}&page=${currentPage}`;
         if(currentSearch) params += `&search=${currentSearch}`
 
-        const res = await categoryServices.getCategories(params)
+        const res = await eventServices.getEvent(params)
         const { data } = res;
 
         // Sort data by name ASCENDING
@@ -52,8 +49,8 @@ function useCategory(){
 
         return data;
     }
-    const { data: dataCategory, isLoading, isRefetching, refetch } = useQuery({
-        queryKey: ["Categories", currentLimit, currentPage, currentSearch],
+    const { data: dataEvent, isLoading, isRefetching, refetch } = useQuery({
+        queryKey: ["Events", currentLimit, currentPage, currentSearch],
         queryFn: ()=>getCategories(),
         enabled: router.isReady && !!currentPage  && !!currentPage,
     })
@@ -96,27 +93,27 @@ function useCategory(){
         })
     }
 
-    return { setURL, currentPage, currentLimit, currentSearch, dataCategory, isLoading, isRefetching, refetch, handleChangePage, handleChangeLimit, handleChangeSearch, handleClearSearch }
+    return { setURL, currentPage, currentLimit, currentSearch, dataEvent, isLoading, isRefetching, refetch, handleChangePage, handleChangeLimit, handleChangeSearch, handleClearSearch }
 }
 
-export default function AdminCategoryView(){
+export default function AdminEventView(){
     const { push, isReady, query } = useRouter();
-    const { setURL, currentPage, currentLimit, currentSearch, dataCategory, isLoading, isRefetching, refetch, handleChangePage, handleChangeLimit, handleChangeSearch, handleClearSearch } = useCategory();
-    const [selectedCategoryId, setSelectedCategoryId] = useState<string|null>(null)
+    const { setURL, currentPage, currentLimit, currentSearch, dataEvent, isLoading, isRefetching, refetch, handleChangePage, handleChangeLimit, handleChangeSearch, handleClearSearch } = useEvent();
+    const [selectedEventId, setSelectedEventId] = useState<string|null>(null)
     const {isOpen: isOpenAdd, onOpen: onOpenAdd, onOpenChange: onOpenChangeAdd} = useDisclosure();
     const {isOpen: isOpenUpdate, onOpen: onOpenUpdate, onOpenChange: onOpenChangeUpdate} = useDisclosure();
     const {isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete} = useDisclosure();
 
-    useEffect(() => {
-        if(isReady) setURL();
-    }, [isReady])
-    
-
     const renderCell = useCallback((category: Record<string, unknown>, columnKey: React.Key) => {
         const cellValue = category[columnKey as keyof typeof category];
         switch(columnKey){
-            case "icon": {
+            case "banner": {
                 return( <Avatar src={`${cellValue}`} className="w-fit h-24" radius="sm" isBordered={false} />)
+            }
+            case "isPublish": {
+                return( 
+                    <Chip size="sm" variant="dot" color={cellValue===true ? "success" : "default"}> {cellValue===true ? "Published" : "Not Publish"} </Chip>
+                )
             }
             case "actions": {
                 return(
@@ -128,9 +125,9 @@ export default function AdminCategoryView(){
                         </DropdownTrigger>
 
                         <DropdownMenu>
-                            <DropdownItem key="view" textValue="view" startContent={<TbListDetails/>} onPress={()=>push(`/admin/category/${category._id}`)}> Detail </DropdownItem>
-                            <DropdownItem key="update" textValue="update" startContent={<FiEdit/>} onPress={()=>{onOpenUpdate(); setSelectedCategoryId(category._id as string)}}> Edit </DropdownItem>
-                            <DropdownItem key="delete" textValue="delete" startContent={<MdDeleteOutline className="text-red-600"/>} onPress={()=>{onOpenDelete(); setSelectedCategoryId(category._id as string)}}> <span className="text-red-600"> Delete </span> </DropdownItem>
+                            <DropdownItem key="view" textValue="view" startContent={<TbListDetails/>} onPress={()=>push(`/admin/event/${category._id}`)}> Detail </DropdownItem>
+                            <DropdownItem key="update" textValue="update" startContent={<FiEdit/>} onPress={()=>{onOpenUpdate(); setSelectedEventId(category._id as string)}}> Edit </DropdownItem>
+                            <DropdownItem key="delete" textValue="delete" startContent={<MdDeleteOutline className="text-red-600"/>} onPress={()=>{onOpenDelete(); setSelectedEventId(category._id as string)}}> <span className="text-red-600"> Delete </span> </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 )
@@ -140,37 +137,39 @@ export default function AdminCategoryView(){
         }
     }, []);
 
+    useEffect(() => {
+        if(isReady) setURL();
+    }, [isReady])
+
     return(
         <>
-            <h1 className="text-2xl lg:text-3xl font-bold"> Category </h1>
-            <p className="mb-6 text-md"> Browse and manage all event categories. Use this page to view, edit, or delete categories for your events. </p>
-            {/* <DataTableCustom columns={CATEGORY_COLUMN_LIST} rows={xdummydata} renderCell={renderCell} onChangeSearc={} onClearSearch={} /> */}
+            <h1 className="text-2xl lg:text-3xl font-bold"> Events </h1>
+            <p className="mb-6 text-md"> 
+                List all of event. Use this page to view, edit, or delete existing events. 
+            </p>
+
             {Object.keys(query).length>0 && (
                 <DataTableCustom 
                     isEmpty="category not found"
                     isLoading={isLoading}
                     // isLoading={isLoading || isRefetching}
-                    columns={CATEGORY_COLUMN_LIST}
-                    rows={dataCategory?.data}
+                    columns={EVENT_COLUMN_LIST}
+                    rows={dataEvent?.data}
                     renderCell={renderCell}
                     onChangeSearch={handleChangeSearch}
                     onClearSearch={handleClearSearch}
-                    optionalBtnTopContentLabel="Add Category"
+                    optionalBtnTopContentLabel="Add Event"
                     optionalBtnTopContentIsOpen={isOpenAdd}
                     optionalBtnTopContentOnOpen={onOpenAdd}
                     optionalBtnTopContentOnChange={onOpenChangeAdd}
                     limit={Number(currentLimit)}
                     onChangeLimit={handleChangeLimit}
                     currentPage={Number(currentPage)}
-                    totalPage={dataCategory?.pagination.totalPage}
-                    totalRows={dataCategory?.pagination.total}
+                    totalPage={dataEvent?.pagination.totalPage}
+                    totalRows={dataEvent?.pagination.total}
                     onChangePage={handleChangePage}
                 />
             )}
-
-            <ModalAddCateogry isOpen={isOpenAdd} onOpenChange={onOpenChangeAdd} modalTitle={"Add Category"} refetch={refetch} />
-            <ModalUpdateCategory isOpen={isOpenUpdate} onOpenChange={onOpenChangeUpdate} modalTitle={"Update Category"} refetch={refetch} categoryId={selectedCategoryId}/>
-            <ModalDeleteCategory isOpen={isOpenDelete} onOpenChange={onOpenChangeDelete} modalTitle={"Delete Category"} refetch={refetch} categoryId={selectedCategoryId}/>
         </>
     )
 }

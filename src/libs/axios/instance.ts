@@ -16,10 +16,10 @@ const AxiosInstance = axios.create({
 });
 
 AxiosInstance.interceptors.request.use(async (request) => { 
-    const session: ISession|null = await getSession();
-    if(session && session.accessToken){
-      request.headers.Authorization = `Bearer ${session.accessToken}`
-      // console.log(`Bearer ${session.accessToken}`);
+    const session = await getSession();
+    if(session && session.user?.accessToken){
+      request.headers.Authorization = `Bearer ${session.user.accessToken}`
+      // console.log(`Bearer ${session.user.accessToken}`);
     }
     return request;
   },

@@ -3,16 +3,17 @@ import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Navb
 import { MoonIcon, SearchIcon, SunIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LuTickets } from "react-icons/lu";
 import { MdDashboard, MdExplore, MdOutlineEmojiEvents, MdOutlineSettings } from "react-icons/md";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, getSession } from "next-auth/react";
 import { TbHelpHexagon, TbLogout2 } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
 import { PiFlagBannerFill } from "react-icons/pi";
 import { FaTags } from "react-icons/fa";
 import { IoMdPricetags } from "react-icons/io";
 import clsx from "clsx";
+import { Session } from "next-auth";
 
 
 
@@ -49,6 +50,13 @@ const menuItemsAdminMobile = [
 export default function MainNavbarLayout() {
     const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    // const [session, setSession] = useState<Session | null>(null);
+    // useEffect(() => {
+    //     getSession().then((sess) => {
+    //         setSession(sess);
+    //         // console.log(session?.user)
+    //     });
+    // }, []);
 
     // check login status
     const { data: session, status } = useSession();

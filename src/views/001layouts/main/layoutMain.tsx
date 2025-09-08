@@ -1,17 +1,14 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import MainNavbarLayout from "./layoutNavbar";
 import { getSession } from "next-auth/react";
-import { ISession } from "@/libs/types/auth";
+import { Session } from "next-auth";
 
 interface propTypes {
-    role?: string;
     children?: ReactNode;
 }
 
 const MainLayout = (props: propTypes) => {
-    const { role, children } = props;
-    // const session: ISession|null = await getSession();
-    // // console.log(session)
+    const { children } = props;
 
     return(
         <>

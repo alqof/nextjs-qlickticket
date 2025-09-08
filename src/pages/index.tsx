@@ -6,12 +6,8 @@ import MainLayout from "@/views/001layouts/main/layoutMain";
 export default function Home() {
   return (
     <>
-      {/* <div className="absolute bottom-4 left-4">
-        <ThemeToggle/>
-      </div> */}
-      
       <Headd title="QlickTicket"/>
-      <MainLayout role="">
+      <MainLayout>
         <MainView />
       </MainLayout>
     </>

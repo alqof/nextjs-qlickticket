@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { IJwt, ISession, IUser } from "@/libs/types/auth";
 import authServices from "@/libs/axios/auth.services";
@@ -49,9 +49,10 @@ export default NextAuth({
             }
             return token;
         },
-        async session({ session, token }: {session: ISession, token: IJwt }) {
+        // async session({ session, token }: {session: ISession, token: IJwt }) {
+        async session({ session, token }: {session: Session, token: IJwt }) {
             session.user = token.user;
-            session.accessToken = token.user?.accessToken;
+            // session.accessToken = token.user?.accessToken;
             
             return session;
         },

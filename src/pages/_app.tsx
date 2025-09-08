@@ -6,14 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { ThemeToggle } from "@/views/002components/ThemeToggle";
 
-const queryClient = new QueryClient({
-  // defaultOptions: {
-  //   queries: {
-  //     refetchOnWindowFocus: false,
-  //     retry: false,
-  //   }
-  // }
-});
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps: {session, ...pageProps} }: AppProps) {
   return (
